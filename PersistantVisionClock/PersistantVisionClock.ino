@@ -10,6 +10,9 @@ ATmega328 (5v, 16 mHZ)
 #include <SparkFunDS1307RTC.h>
 #include <Wire.h>
 
+#define button 11
+#define hallEffect 10
+
 #define refreshrate  900
 
 void printCharacters(String theCharacters);
@@ -21,7 +24,7 @@ void setup() {
 
   Serial.begin(9600);
   Serial.println("PersistantVisionClock");
-  Serial.println("Last Modified 13Aug2017");
+  Serial.println("Last Modified 17Aug2017");
 
    pinMode(2,OUTPUT); // outermost
    pinMode(3,OUTPUT);
@@ -33,13 +36,20 @@ void setup() {
    pinMode(8,OUTPUT);
    pinMode(9,OUTPUT); // innermost
    
-   pinMode(10,INPUT); // hall effect
+   pinMode(hallEffect,INPUT); // hall effect
+   pinMode(button,INPUT); // button
    
    LoopHighLow();
 
     rtc.begin();
     rtc.set12Hour();
-  //rtc.autoTime();
+  //
+
+  if (digitalRead(button) == HIGH) {
+    rtc.autoTime();
+  } 
+
+  
   // e.g. 7:32:16 | Monday October 31, 2016:
   // rtc.setTime(16, 32, 9, 4, 18, 1, 17);  // Uncomment to manually set time
   delay(1000);
@@ -48,7 +58,7 @@ void setup() {
 void loop() {
 
 
-  if (digitalRead(10) == HIGH) {
+  if (digitalRead(hallEffect) == HIGH) {
 
   } else {
 
