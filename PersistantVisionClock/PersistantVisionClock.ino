@@ -18,13 +18,6 @@ ATmega328 (5v, 16 mHZ)
 void printCharacters(String theCharacters);
 void printTime();
 
-int n = 0;
-
-unsigned long startTime;
-unsigned long finishTime;
-
-
-
 void setup() {
 
   Serial.begin(9600);
@@ -48,16 +41,11 @@ void setup() {
 
     rtc.begin();
     rtc.set12Hour();
-  //
 
   if (digitalRead(button) == HIGH) {
     rtc.autoTime();
     LoopHighLow();
   } 
-
-  
-  // e.g. 7:32:16 | Monday October 31, 2016:
-  // rtc.setTime(16, 32, 9, 4, 18, 1, 17);  // Uncomment to manually set time
   delay(1000);
 }
 
