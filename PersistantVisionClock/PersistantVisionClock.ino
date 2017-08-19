@@ -20,11 +20,16 @@ void printTime();
 
 int n = 0;
 
+unsigned long startTime;
+unsigned long finishTime;
+
+
+
 void setup() {
 
   Serial.begin(9600);
   Serial.println("PersistantVisionClock");
-  Serial.println("Last Modified 17Aug2017");
+  Serial.println("Last Modified 19Aug2017");
 
    pinMode(2,OUTPUT); // outermost
    pinMode(3,OUTPUT);
@@ -47,6 +52,7 @@ void setup() {
 
   if (digitalRead(button) == HIGH) {
     rtc.autoTime();
+    LoopHighLow();
   } 
 
   
@@ -61,13 +67,17 @@ void loop() {
   if (digitalRead(hallEffect) == HIGH) {
 
   } else {
+    delayMicroseconds(100);
+    if (digitalRead(hallEffect) == LOW) {  // this double check prevents the thing from flickering randomly as it spins.
 
-  printCharacters(String(rtc.hour()) + ":");
-  if (rtc.minute() < 10) printCharacters("0"); // Print leading '0' for minute
-  printCharacters(String(rtc.minute()) + ":"); // Print minute
-  if (rtc.second() < 10) printCharacters("0"); // Print leading '0' for second
-  printCharacters(String(rtc.second())); // Print second
-  rtc.update();
+      printCharacters(String(rtc.hour()) + ":");
+      if (rtc.minute() < 10) printCharacters("0"); // Print leading '0' for minute
+      printCharacters(String(rtc.minute()) + ":"); // Print minute
+      if (rtc.second() < 10) printCharacters("0"); // Print leading '0' for second
+      printCharacters(String(rtc.second())); // Print second
+     
+      rtc.update();
+    }
   }
 
 }
